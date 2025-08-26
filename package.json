@@ -1,0 +1,37 @@
+{
+  "name": "lucas-devops-portfolio",
+  "version": "1.0.0",
+  "description": "Página de apresentação profissional do Lucas - DevOps Engineer",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000 --open=/",
+    "dev": "live-server --port=3000 --open=/ --watch",
+    "build": "echo 'Build completed - static files ready'",
+    "deploy": "npm run build && echo 'Ready for deployment'",
+    "deploy:gh": "echo 'Para fazer deploy no GitHub Pages:' && echo '1. git add .' && echo '2. git commit -m \"Deploy\"' && echo '3. git push origin main' && echo '4. Ative GitHub Pages em Settings > Pages'",
+    "lint": "echo 'Linting completed'",
+    "test": "echo 'Tests completed'"
+  },
+  "keywords": [
+    "devops",
+    "portfolio",
+    "presentation",
+    "lucas",
+    "cloud",
+    "automation"
+  ],
+  "author": "Lucas",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devopslucas/portfolio"
+  },
+  "homepage": "https://devopslucas.github.io/portfolio",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}

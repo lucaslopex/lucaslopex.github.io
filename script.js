@@ -103,25 +103,51 @@ document.addEventListener("DOMContentLoaded", function () {
   stats.forEach((stat) => statsObserver.observe(stat));
 });
 
-// Formulário de contato
-const contactForm = document.querySelector(".contact-form form");
+// Formulário de contato com Web3Forms
+const contactForm = document.querySelector("#contact-form");
 if (contactForm) {
-  contactForm.addEventListener("submit", function (e) {
+  contactForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    // Simular envio
     const submitBtn = this.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
+    const messageDiv = document.getElementById('form-message');
 
+    // Mostrar estado de envio
     submitBtn.textContent = "Enviando...";
     submitBtn.disabled = true;
+    messageDiv.style.display = "none";
 
-    setTimeout(() => {
-      alert("Mensagem enviada com sucesso! Entrarei em contato em breve.");
-      this.reset();
+    try {
+      const formData = new FormData(this);
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+      console.log('Resposta do servidor:', data);
+
+      if (response.ok && data.success) {
+        // Sucesso
+        messageDiv.innerHTML = '<p style="color: #10b981; font-weight: 500;">✓ Mensagem enviada com sucesso! Entrarei em contato em breve.</p>';
+        messageDiv.style.display = "block";
+        this.reset();
+      } else {
+        // Erro do servidor
+        messageDiv.innerHTML = '<p style="color: #ef4444; font-weight: 500;">✗ ' + (data.message || 'Erro ao enviar mensagem') + '</p>';
+        messageDiv.style.display = "block";
+      }
+    } catch (error) {
+      // Erro de rede ou outro erro
+      console.error('Erro completo:', error);
+      messageDiv.innerHTML = '<p style="color: #ef4444; font-weight: 500;">✗ Erro ao enviar mensagem. Por favor, tente novamente ou entre em contato por email.</p>';
+      messageDiv.style.display = "block";
+    } finally {
+      // Restaurar botão
       submitBtn.textContent = originalText;
       submitBtn.disabled = false;
-    }, 2000);
+    }
   });
 }
 
